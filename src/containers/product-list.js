@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import selectProduct from "./../actions";
 
 class productList extends Component {
   createListProduct() {
     return this.props.products.map((product) => (
-      <li key={product.id}>{product.title}</li>
+      <div key={product.id}>
+        <div>{product.title}</div>
+        <button onClick={() => this.props.selectProduct(product)}>
+          Show Detail
+        </button>
+      </div>
     ));
   }
   render() {
-    return (
-      <div>
-        <ul>{this.createListProduct()}</ul>
-      </div>
-    );
+    return <div>{this.createListProduct()}</div>;
   }
 }
 
@@ -23,4 +25,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(productList);
+function matchDispatchtoProps(dispatch) {
+  return bindActionCreators({ selectProduct: selectProduct }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchtoProps)(productList);
